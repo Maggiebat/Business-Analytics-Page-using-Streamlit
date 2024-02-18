@@ -15,3 +15,8 @@ def view_all_data():
     c.execute('select * from customers order by id asc')
     data = c.fetchall()
     return  data
+
+def viewASS():
+    c.execute('select * from annualSalarySum order by ID asc')
+    data = c.fetchall()
+    return data
