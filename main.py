@@ -137,6 +137,13 @@ def bubble():
         fig=px.scatter(df, x="Age", y="AnnualSalary", color="Department", log_x=True, hover_name="FullName")
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
+def geoMap():
+    # this map shows the map of where the people are
+    # need to show the amount of people in each country
+    theme_plotly=None
+    fig=px.scatter_geo(df, color="City", hover_name="Country")
+    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
+
 # making the table
 def table():
     with st.expander("My Database Table", expanded=True):
@@ -168,6 +175,7 @@ if selected=="Home":
     sunburst()
     pie()
     bubble()
+    geoMap()
     metrics2()
 elif selected=="Table":
     table()
