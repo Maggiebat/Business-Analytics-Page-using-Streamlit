@@ -77,7 +77,7 @@ def metrics():
 
 def metrics2():
     # check the populated department thing
-    col1,col2=st.columns(2)
+    col1,col2,col3=st.columns(3)
     col1.metric("Average Age", value=f"{df_selection.Age.mean():.0f}",delta="Average Age")
     col2.metric("Most Populated Department", value=df_selection.Department.max(),delta="Most Populated Department")
 
@@ -90,7 +90,7 @@ div1, div2 = st.columns(2)
 def pie():
     with div1:
         theme_plotly=None
-        fig=px.pie(df_selection,values="AnnualSalary", names="Department", title="Customer by Department")
+        fig=px.pie(df_selection,values="AnnualSalary", names="Department", title="Employee by Department")
         fig.update_layout(legend_title='Department', legend_y=0.9)
         fig.update_traces(textinfo="percent + label", textposition="inside")
         st.plotly_chart(fig, use_container_width=True,theme=theme_plotly)
@@ -117,31 +117,27 @@ def newbar():
 def sunburst():
     # attach to the sidebar
     theme_plotly=None
-    fig=px.sunburst(df, path=["Gender", "Department", "Ethnicity"])
+    fig=px.sunburst(df_selection, path=["Gender", "Department", "Ethnicity"])
     # have it show the average salary when you hover over it (average f)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)  
     
 def icicle():
-    # not being used
-    with div2:
-        theme_plotly=None
-        fig = px.icicle(df, path=[px.Constant("all"), 'Gender', "Ethnicity", "Department"])
-        st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
+    theme_plotly=None
+    fig = px.icicle(df, path=[px.Constant("all"), 'HireDate', "Department"])
+    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
 def bubble():
-    # attach to sidebar
     with div2:
         theme_plotly=None
-        # should y be salary, or bonus
-        # should x be age or salary
-        fig=px.scatter(df, x="Age", y="AnnualSalary", color="Department", log_x=True, hover_name="FullName")
+        # make a new table that shows vp salaries and p salaries
+        fig=px.scatter(df_selection, x="Age", y="AnnualSalary", color="Department", log_x=True, hover_name="FullName", hover_data="JobTitle")
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
 def geoMap():
     # this map shows the map of where the people are
     # need to show the amount of people in each country
     theme_plotly=None
-    fig=px.scatter_geo(df, color="City", hover_name="Country")
+    fig=px.scatter_geo(df_selection, locations="Country", color="Department", hover_name="City")
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
 # making the table
@@ -168,14 +164,11 @@ with st.sidebar:
         orientation="vertical"
     )
 
-# insert into annualsalarysum(IT) select SUM(customers.AnnualSalary) from customers where Department='IT'
-# above is a SQL statement to put the annual salaries sum into a new table
 
 if selected=="Home":
     sunburst()
     pie()
     bubble()
-    geoMap()
     metrics2()
 elif selected=="Table":
     table()
