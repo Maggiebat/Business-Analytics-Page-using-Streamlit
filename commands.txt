@@ -1,0 +1,5 @@
+streamlit run Main.py
+
+Control C to stop
+
+.venv\Scripts\deactivate.bat
