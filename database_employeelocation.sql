@@ -2,9 +2,9 @@ create table employeelocation (
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     lon double,
 	lat double,
-    citycode varchar(255),
-    city varchar(255),
-    department varchar(255)
+    countryindex int,
+    isocode varchar(255),
+    city varchar(255)
 )
 
 insert into employeelocation (department) 
